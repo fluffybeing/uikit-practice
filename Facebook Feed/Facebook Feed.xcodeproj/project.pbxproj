@@ -11,6 +11,9 @@
 		B727AF5F1EB6591C00502087 /* FeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B727AF5E1EB6591C00502087 /* FeedController.swift */; };
 		B727AF641EB6591C00502087 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B727AF631EB6591C00502087 /* Assets.xcassets */; };
 		B727AF671EB6591C00502087 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B727AF651EB6591C00502087 /* LaunchScreen.storyboard */; };
+		B727AF6F1EB6A0B300502087 /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B727AF6E1EB6A0B300502087 /* FeedCell.swift */; };
+		B727AF711EB6A0EF00502087 /* Posts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B727AF701EB6A0EF00502087 /* Posts.swift */; };
+		B727AF731EB6A10C00502087 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B727AF721EB6A10C00502087 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +23,9 @@
 		B727AF631EB6591C00502087 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B727AF661EB6591C00502087 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B727AF681EB6591C00502087 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B727AF6E1EB6A0B300502087 /* FeedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
+		B727AF701EB6A0EF00502087 /* Posts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Posts.swift; sourceTree = "<group>"; };
+		B727AF721EB6A10C00502087 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +63,9 @@
 				B727AF631EB6591C00502087 /* Assets.xcassets */,
 				B727AF651EB6591C00502087 /* LaunchScreen.storyboard */,
 				B727AF681EB6591C00502087 /* Info.plist */,
+				B727AF6E1EB6A0B300502087 /* FeedCell.swift */,
+				B727AF701EB6A0EF00502087 /* Posts.swift */,
+				B727AF721EB6A10C00502087 /* Extensions.swift */,
 			);
 			path = "Facebook Feed";
 			sourceTree = "<group>";
@@ -132,8 +141,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B727AF731EB6A10C00502087 /* Extensions.swift in Sources */,
 				B727AF5F1EB6591C00502087 /* FeedController.swift in Sources */,
 				B727AF5D1EB6591C00502087 /* AppDelegate.swift in Sources */,
+				B727AF6F1EB6A0B300502087 /* FeedCell.swift in Sources */,
+				B727AF711EB6A0EF00502087 /* Posts.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

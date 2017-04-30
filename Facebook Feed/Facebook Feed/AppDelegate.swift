@@ -20,8 +20,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
 
-        
+        let posts = Posts()
         let feedController = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
+        feedController.posts = posts.getPostList()
+        
         let navigationController = UINavigationController(rootViewController: feedController)
         window?.rootViewController = navigationController
         
