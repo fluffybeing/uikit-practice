@@ -1,4 +1,4 @@
-//
+ //
 //  ViewController.swift
 //  Facebook Feed
 //
@@ -8,12 +8,40 @@
 
 import UIKit
 
+
+class Post {
+    var name: String?
+    var statusText: String?
+    var profileImageName: String?
+    var statusImageName: String?
+    var numLikes: Int?
+    var numComments: Int?
+}
+
 class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     let cellId = "cellId"
+    var posts = [Post]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let postMark = Post()
+        postMark.name = "Mark Zuckerberg"
+        postMark.statusText = "Meanwhile, Beast turned to the dark side."
+        
+        let postSteve = Post()
+        postSteve.name = "Steve Jobs"
+        postSteve.statusText = "Design is not what it looks like and feels like. Design id how it works.\n\n" + "Being the richest man in the cementery doesn't matter to me. Going to bed at night saying we'have done something wonderful, that's what matters to me. \n\n" + "Sometimes when you innovate' you make mistakes. It id best to admit them quickly, and get on with improving your other innovations."
+        
+        let postGandhi = Post()
+        postGandhi.name = "Mahatama Gandhi"
+        postGandhi.statusText = "Like live you will die tommorrow but learn like your will live forever"
+
+        
+        posts.append(postSteve)
+        posts.append(postMark)
+        posts.append(postGandhi)
         
         navigationItem.title = "Facebook Feed"
 
@@ -33,15 +61,30 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return posts.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+        let feedCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! FeedCell
+        
+        feedCell.post = posts[indexPath.item]
+        
+        return feedCell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 400)
+        
+        if let statusText = posts[indexPath.item].statusText {
+            let rect = NSString(string: statusText).boundingRect(
+                with: CGSize(width: view.frame.width, height: 1000),
+                options: NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 14)], context: nil)
+            
+            let knownHeight: CGFloat = 8 + 44 + 4 + 4 + 200 + 8 + 24 + 8 + 44 + 1
+            
+            return CGSize(width: view.frame.width, height: rect.height + knownHeight + 16)
+        }
+        
+        return CGSize(width: view.frame.width, height: 500)
     }
     
 
@@ -50,25 +93,44 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
 
 class FeedCell: UICollectionViewCell {
     
+    var post: Post? {
+        didSet {
+            if let name = post?.name {
+                let attributedString = NSMutableAttributedString(string: name, attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 14)])
+                attributedString.append(NSAttributedString(string: "\nDecember 18  •  San Franscisco  • ", attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12), NSForegroundColorAttributeName: UIColor.init(red: 155/255, green: 161/255, blue: 171/255, alpha: 1)]))
+                
+                // Add line spacing in attributed text
+                let paragraphStyle = NSMutableParagraphStyle()
+                paragraphStyle.lineSpacing = 4
+                attributedString.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, attributedString.length))
+                
+                // Attachement for the globe
+                let attachment = NSTextAttachment()
+                attachment.image = UIImage(named: "earth")
+                attachment.bounds = CGRect(x: 0, y: -2, width: 12, height: 12)
+                attributedString.append(NSAttributedString(attachment: attachment))
+                
+                nameLabel.attributedText = attributedString
+            }
+            
+            if let statusText = post?.statusText {
+                statusTextView.text = statusText
+            }
+            
+            if let profileImage = post?.profileImageName {
+                profileImageView.image = UIImage(named: profileImage)
+            }
+            
+            if let statusImage = post?.statusImageName {
+                statusImageView.image = UIImage(named: statusImage)
+            }
+        }
+        
+    }
+    
     let nameLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 2
-        
-        let attributedString = NSMutableAttributedString(string: "Mark Zuckerberg", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 14)])
-        attributedString.append(NSAttributedString(string: "\nDecember 18  •  San Franscisco  • ", attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12), NSForegroundColorAttributeName: UIColor.init(red: 155/255, green: 161/255, blue: 171/255, alpha: 1)]))
-        
-        // Add line spacing in attributed text
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = 4
-        attributedString.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, attributedString.length))
-        
-        // Attachement for the globe
-        let attachment = NSTextAttachment()
-        attachment.image = UIImage(named: "earth")
-        attachment.bounds = CGRect(x: 0, y: -2, width: 12, height: 12)
-        attributedString.append(NSAttributedString(attachment: attachment))
-        
-        label.attributedText = attributedString
         
         return label
     }()
@@ -83,8 +145,9 @@ class FeedCell: UICollectionViewCell {
     
     let statusTextView: UITextView = {
         let textView = UITextView()
-        textView.text = "Meanwhile, Beast turned to the dark side"
         textView.font = UIFont.systemFont(ofSize: 14)
+        textView.isScrollEnabled = false
+        
         return textView
     }()
     
@@ -163,9 +226,9 @@ class FeedCell: UICollectionViewCell {
         addContraintWithFormat(format: "H:|[v0(v2)][v1(v2)][v2]|", views: likeButton, commentButton, shareButton)
 
         addContraintWithFormat(format: "V:|-12-[v0]", views: nameLabel)
-        addContraintWithFormat(format: "V:|-8-[v0(44)]-4-[v1(30)]", views: profileImageView, statusTextView)
+        addContraintWithFormat(format: "V:|-8-[v0(44)]-4-[v1]", views: profileImageView, statusTextView)
         // the constraint can be separated.
-        addContraintWithFormat(format: "V:[v0]-4-[v1]", views: statusTextView, statusImageView)
+        addContraintWithFormat(format: "V:[v0]-4-[v1(200)]", views: statusTextView, statusImageView)
         addContraintWithFormat(format: "V:[v0]-8-[v1(24)]-8-[v2(0.5)][v3(44)]|", views: statusImageView, likeCommentsLabel, dividerLineView, likeButton)
         addContraintWithFormat(format: "V:[v0(44)]|", views: commentButton)
         addContraintWithFormat(format: "V:[v0(44)]|", views: shareButton)
