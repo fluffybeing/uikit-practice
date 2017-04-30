@@ -23,6 +23,15 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     
+    // Orientation
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        // When orientations changes draw the layout again
+        collectionView?.collectionViewLayout.invalidateLayout()
+    }
+    
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 3
     }
@@ -32,8 +41,9 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 300)
+        return CGSize(width: view.frame.width, height: 400)
     }
+    
 
 }
 
@@ -88,6 +98,37 @@ class FeedCell: UICollectionViewCell {
         return imageView
     }()
     
+    let likeCommentsLabel: UILabel = {
+        let label = UILabel()
+        label.text = "488 Likes    10.7K Comments"
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = UIColor.rgb(red: 155, green: 161, blue: 171)
+        
+        return label
+    }()
+    
+    let dividerLineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.rgb(red: 226, green: 228, blue: 232)
+        return view
+    }()
+    
+    let likeButton: UIButton = FeedCell.buttonForTitle(title: "Like", imageName: "like")
+    let commentButton: UIButton = FeedCell.buttonForTitle(title: "Comment", imageName: "like")
+    let shareButton: UIButton = FeedCell.buttonForTitle(title: "Share", imageName: "like")
+    
+    static func buttonForTitle(title: String, imageName: String) -> UIButton {
+        let button = UIButton(type: UIButtonType.roundedRect)
+        button.setTitle(title, for: .normal)
+        button.setTitleColor(UIColor.rgb(red: 143, green: 150, blue: 163), for: .normal)
+        button.titleEdgeInsets = UIEdgeInsets.init(top: 0, left: 8, bottom: 0, right: 0)
+        
+        button.setImage(UIImage(named: imageName), for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        
+        return button
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -106,18 +147,37 @@ class FeedCell: UICollectionViewCell {
         addSubview(profileImageView)
         addSubview(statusTextView)
         addSubview(statusImageView)
+        addSubview(likeCommentsLabel)
+        addSubview(dividerLineView)
+        addSubview(likeButton)
+        addSubview(commentButton)
+        addSubview(shareButton)
         
         addContraintWithFormat(format: "H:|-8-[v0(44)]-8-[v1]|" , views: profileImageView, nameLabel)
         addContraintWithFormat(format: "H:|-4-[v0]-4-|", views: statusTextView)
         addContraintWithFormat(format: "H:|[v0]|", views: statusImageView)
+        addContraintWithFormat(format: "H:|-12-[v0]|", views: likeCommentsLabel)
+        addContraintWithFormat(format: "H:|-12-[v0]-12-|", views: dividerLineView)
+        
+        // Button equal spaced
+        addContraintWithFormat(format: "H:|[v0(v2)][v1(v2)][v2]|", views: likeButton, commentButton, shareButton)
 
         addContraintWithFormat(format: "V:|-12-[v0]", views: nameLabel)
         addContraintWithFormat(format: "V:|-8-[v0(44)]-4-[v1(30)]", views: profileImageView, statusTextView)
         // the constraint can be separated.
-        addContraintWithFormat(format: "V:[v0]-4-[v1]|", views: statusTextView, statusImageView)
-        
+        addContraintWithFormat(format: "V:[v0]-4-[v1]", views: statusTextView, statusImageView)
+        addContraintWithFormat(format: "V:[v0]-8-[v1(24)]-8-[v2(0.5)][v3(44)]|", views: statusImageView, likeCommentsLabel, dividerLineView, likeButton)
+        addContraintWithFormat(format: "V:[v0(44)]|", views: commentButton)
+        addContraintWithFormat(format: "V:[v0(44)]|", views: shareButton)
+
     }
     
+}
+
+extension UIColor {
+    static func rgb(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
+        return UIColor(red: red/255, green: green/255, blue: blue/255, alpha: 1)
+    }
 }
 
 
