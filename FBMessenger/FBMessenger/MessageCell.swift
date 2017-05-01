@@ -51,7 +51,7 @@ class MessageCell: BaseCell {
     let nameLabel: UILabel = {
         let label = UILabel()
         label.text = "Charul"
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.font = UIFont.systemFont(ofSize: 18)
         
         return label
     }()
@@ -60,7 +60,7 @@ class MessageCell: BaseCell {
         let label = UILabel()
         label.text = "Your friends message just arrived, just check it out."
         label.textColor = UIColor.darkGray
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = UIFont.systemFont(ofSize: 16)
         
         return label
     }()
@@ -68,7 +68,7 @@ class MessageCell: BaseCell {
     let timeLabel: UILabel = {
         let label = UILabel()
         label.text = "12:05 PM"
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.font = UIFont.systemFont(ofSize: 14)
         label.textAlignment = .right
         
         return label
