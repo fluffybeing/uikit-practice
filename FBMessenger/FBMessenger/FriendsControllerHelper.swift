@@ -9,42 +9,36 @@
 import UIKit
 import CoreData
 
-//class Friend: NSObject {
-//    
-//    var name: String?
-//    var profileImageName: String?
-//}
-//
-//class Message: NSObject {
-//    var text: String?
-//    var date: NSDate?
-//    
-//    var friend: Friend?
-//}
-
 extension FriendsController {
     
     func setupData() {
         
-        let charul = Friend()
-        charul.name = "Charul"
-        charul.profileImageName = "charul"
+        let delegate = UIApplication.shared.delegate as? AppDelegate
         
-        let message = Message()
-        message.friend = charul
-        message.text = "Hello, my name is charul. Nice to meet you...."
-        message.date = NSDate()
+        if let context = delegate?.persistentContainer.viewContext {
+            
+            let charul = Friend.init(entity: NSEntityDescription.entity(forEntityName: "Friend", in: context)!, insertInto: context)
+            charul.name = "Charul"
+            charul.profileImageName = "charul"
+            
+            let message = Message.init(entity: NSEntityDescription.entity(forEntityName: "Message", in: context)!, insertInto: context)
+            message.friend = charul
+            message.text = "Hello, my name is charul. Nice to meet you...."
+            message.date = NSDate()
+            
+            let rahul = Friend.init(entity: NSEntityDescription.entity(forEntityName: "Friend", in: context)!, insertInto: context)
+            rahul.name = "Rahul"
+            rahul.profileImageName = "rahul"
+            
+            let messageRahul = Message.init(entity: NSEntityDescription.entity(forEntityName: "Message", in: context)!, insertInto: context)
+            messageRahul.friend = rahul
+            messageRahul.text = "Hello, my name is Rahul. Nice to meet you...."
+            messageRahul.date = NSDate()
+            
+            
+            messages = [message, messageRahul]
+            
+        }
         
-        let rahul = Friend()
-        rahul.name = "Rahul"
-        rahul.profileImageName = "rahul"
-        
-        let messageRahul = Message()
-        messageRahul.friend = rahul
-        messageRahul.text = "Hello, my name is Rahul. Nice to meet you...."
-        messageRahul.date = NSDate()
-
-        
-        messages = [message, messageRahul]
     }
 }

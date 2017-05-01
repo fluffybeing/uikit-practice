@@ -15,6 +15,7 @@ extension Friend {
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Friend> {
         return NSFetchRequest<Friend>(entityName: "Friend")
     }
+
 }
 
 // MARK: Generated accessors for messages
