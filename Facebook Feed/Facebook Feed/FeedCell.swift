@@ -13,6 +13,13 @@ import UIKit
 
 class FeedCell: UICollectionViewCell {
     
+    var feedController: FeedController?
+    
+    func animate() {
+        feedController?.animateWithImageView(statusImageView: statusImageView)
+    }
+
+    
     var post: Post? {
         didSet {
             statusImageView.image = nil
@@ -76,6 +83,7 @@ class FeedCell: UICollectionViewCell {
         imageView.backgroundColor = UIColor.purple
         // clip pixel which we don't want
         imageView.layer.masksToBounds = true
+        imageView.isUserInteractionEnabled = true
         
         return imageView
     }()
@@ -128,7 +136,6 @@ class FeedCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     func setupViews() {
         addSubview(nameLabel)
         addSubview(profileImageView)
@@ -145,6 +152,12 @@ class FeedCell: UICollectionViewCell {
 //        self.contentView.addSubview(loader)
 //        self.loader.startAnimating()
         setupStatusImageViewLoader()
+        
+        
+        
+        // Animation
+        statusImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(animate)))
+        
         
         addContraintWithFormat(format: "H:|-8-[v0(44)]-8-[v1]|" , views: profileImageView, nameLabel)
         addContraintWithFormat(format: "H:|-4-[v0]-4-|", views: statusTextView)
@@ -174,6 +187,7 @@ class FeedCell: UICollectionViewCell {
         statusImageView.addContraintWithFormat(format: "H:|[v0]|", views: loader)
         statusImageView.addContraintWithFormat(format: "V:|[v0]|", views: loader)
     }
+    
     
     private func setupNameLocationStatusAndProfileImage() {
         if let name = post?.name {
