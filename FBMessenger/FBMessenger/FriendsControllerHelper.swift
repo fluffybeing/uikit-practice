@@ -13,6 +13,8 @@ extension FriendsController {
     
     func setupData() {
         
+        clearData()
+        
         let delegate = UIApplication.shared.delegate as? AppDelegate
         
         if let context = delegate?.persistentContainer.viewContext {
@@ -35,10 +37,51 @@ extension FriendsController {
             messageRahul.text = "Hello, my name is Rahul. Nice to meet you...."
             messageRahul.date = NSDate()
             
-            
-            messages = [message, messageRahul]
-            
+            do {
+                try context.save()
+            } catch let error {
+                print(error.localizedDescription)
+            }
         }
         
+        loadData()
+    }
+    
+    func loadData() {
+        let delegate = UIApplication.shared.delegate as? AppDelegate
+        
+        if let context = delegate?.persistentContainer.viewContext {
+            
+            let fetchRequest =  NSFetchRequest<Message>(entityName: "Message")
+            do {
+                messages = try context.fetch(fetchRequest)
+            } catch let error {
+                print(error.localizedDescription)
+            }
+            
+            try! context.save()
+        }
+
+    }
+    
+    func clearData() {
+        let delegate = UIApplication.shared.delegate as? AppDelegate
+        
+        // create the delete request for the specified entity
+        let fetchDeleteRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Message")
+        let deleteMessageRequest = NSBatchDeleteRequest(fetchRequest: fetchDeleteRequest)
+        
+        let fetchFriendRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Friend")
+        let deleteFriendRequest = NSBatchDeleteRequest(fetchRequest: fetchFriendRequest)
+
+        
+        if let context = delegate?.persistentContainer.viewContext {
+            do {
+                try context.execute(deleteMessageRequest)
+                try context.execute(deleteFriendRequest)
+            } catch let error {
+                print(error.localizedDescription)
+            }
+        }
     }
 }
