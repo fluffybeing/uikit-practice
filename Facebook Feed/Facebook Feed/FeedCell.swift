@@ -112,7 +112,7 @@ class FeedCell: UICollectionViewCell {
     }
     
     let loader: UIActivityIndicatorView = {
-        let activity = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+        let activity = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
         return activity
     }()
     
@@ -141,9 +141,10 @@ class FeedCell: UICollectionViewCell {
         addSubview(shareButton)
         
         // Activity View
-        self.loader.center = self.statusImageView.center
-        self.contentView.addSubview(loader)
-        self.loader.startAnimating()
+//        self.loader.center = self.statusImageView.center
+//        self.contentView.addSubview(loader)
+//        self.loader.startAnimating()
+        setupStatusImageViewLoader()
         
         addContraintWithFormat(format: "H:|-8-[v0(44)]-8-[v1]|" , views: profileImageView, nameLabel)
         addContraintWithFormat(format: "H:|-4-[v0]-4-|", views: statusTextView)
@@ -162,6 +163,16 @@ class FeedCell: UICollectionViewCell {
         addContraintWithFormat(format: "V:[v0(44)]|", views: commentButton)
         addContraintWithFormat(format: "V:[v0(44)]|", views: shareButton)
         
+    }
+    
+    func setupStatusImageViewLoader() {
+        loader.hidesWhenStopped = true
+        loader.startAnimating()
+        loader.color = UIColor.black
+        statusImageView.addSubview(loader)
+        
+        statusImageView.addContraintWithFormat(format: "H:|[v0]|", views: loader)
+        statusImageView.addContraintWithFormat(format: "V:|[v0]|", views: loader)
     }
     
     private func setupNameLocationStatusAndProfileImage() {
