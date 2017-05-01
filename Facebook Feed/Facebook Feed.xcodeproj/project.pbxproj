@@ -14,6 +14,7 @@
 		B727AF6F1EB6A0B300502087 /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B727AF6E1EB6A0B300502087 /* FeedCell.swift */; };
 		B727AF711EB6A0EF00502087 /* Posts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B727AF701EB6A0EF00502087 /* Posts.swift */; };
 		B727AF731EB6A10C00502087 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B727AF721EB6A10C00502087 /* Extensions.swift */; };
+		B727AF751EB6B75200502087 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B727AF741EB6B75200502087 /* CustomTabBarController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		B727AF6E1EB6A0B300502087 /* FeedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		B727AF701EB6A0EF00502087 /* Posts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Posts.swift; sourceTree = "<group>"; };
 		B727AF721EB6A10C00502087 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		B727AF741EB6B75200502087 /* CustomTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 				B727AF6E1EB6A0B300502087 /* FeedCell.swift */,
 				B727AF701EB6A0EF00502087 /* Posts.swift */,
 				B727AF721EB6A10C00502087 /* Extensions.swift */,
+				B727AF741EB6B75200502087 /* CustomTabBarController.swift */,
 			);
 			path = "Facebook Feed";
 			sourceTree = "<group>";
@@ -143,6 +146,7 @@
 			files = (
 				B727AF731EB6A10C00502087 /* Extensions.swift in Sources */,
 				B727AF5F1EB6591C00502087 /* FeedController.swift in Sources */,
+				B727AF751EB6B75200502087 /* CustomTabBarController.swift in Sources */,
 				B727AF5D1EB6591C00502087 /* AppDelegate.swift in Sources */,
 				B727AF6F1EB6A0B300502087 /* FeedCell.swift in Sources */,
 				B727AF711EB6A0EF00502087 /* Posts.swift in Sources */,

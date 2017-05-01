@@ -18,14 +18,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.makeKeyAndVisible()
-
-        let posts = Posts()
-        let feedController = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
-        feedController.posts = posts.getPostList()
+        window?.makeKeyAndVisible()        
+        window?.rootViewController = CustomTabBarController()
         
-        let navigationController = UINavigationController(rootViewController: feedController)
-        window?.rootViewController = navigationController
+        UITabBar.appearance().tintColor = UIColor.red
         
         UINavigationBar.appearance().barTintColor = UIColor(red: 51/255, green: 90/255, blue: 149/255, alpha: 1)
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]

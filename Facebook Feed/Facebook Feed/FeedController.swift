@@ -12,7 +12,7 @@ import UIKit
 class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     let cellId = "cellId"
-    var posts = [Post]()
+    var posts = Posts()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,20 +40,20 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return posts.count
+        return posts.numberOfPosts()
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let feedCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! FeedCell
         
-        feedCell.post = posts[indexPath.item]
+        feedCell.post = posts[indexPath]
         
         return feedCell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        if let statusText = posts[indexPath.item].statusText {
+        if let statusText = posts[indexPath].statusText {
             let rect = NSString(string: statusText).boundingRect(
                 with: CGSize(width: view.frame.width, height: 1000),
                 options: NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 14)], context: nil)
