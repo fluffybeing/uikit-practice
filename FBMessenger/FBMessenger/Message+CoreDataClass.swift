@@ -15,4 +15,5 @@ public class Message: NSManagedObject {
     @NSManaged public var text: String?
     @NSManaged public var date: NSDate?
     @NSManaged public var friend: Friend?
+    @NSManaged public var isSender: NSNumber?
 }

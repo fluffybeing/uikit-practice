@@ -19,6 +19,8 @@
 		B724B4AC1EB7CBE90023AEBE /* Message+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B724B4A81EB7CBE90023AEBE /* Message+CoreDataProperties.swift */; };
 		B724B4AD1EB7CBE90023AEBE /* Friend+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B724B4A91EB7CBE90023AEBE /* Friend+CoreDataClass.swift */; };
 		B724B4AE1EB7CBE90023AEBE /* Friend+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B724B4AA1EB7CBE90023AEBE /* Friend+CoreDataProperties.swift */; };
+		B724B4B01EB7ED080023AEBE /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B724B4AF1EB7ED080023AEBE /* ChatLogController.swift */; };
+		B768C11F1EB8FB2700B3A1CB /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B768C11E1EB8FB2700B3A1CB /* CustomTabBarController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		B724B4A81EB7CBE90023AEBE /* Message+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Message+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B724B4A91EB7CBE90023AEBE /* Friend+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Friend+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B724B4AA1EB7CBE90023AEBE /* Friend+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Friend+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		B724B4AF1EB7ED080023AEBE /* ChatLogController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
+		B768C11E1EB8FB2700B3A1CB /* CustomTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,10 +72,7 @@
 		B724B48B1EB79F0C0023AEBE /* FBMessenger */ = {
 			isa = PBXGroup;
 			children = (
-				B724B4A71EB7CBE90023AEBE /* Message+CoreDataClass.swift */,
-				B724B4A81EB7CBE90023AEBE /* Message+CoreDataProperties.swift */,
-				B724B4A91EB7CBE90023AEBE /* Friend+CoreDataClass.swift */,
-				B724B4AA1EB7CBE90023AEBE /* Friend+CoreDataProperties.swift */,
+				B768C11D1EB8FA5300B3A1CB /* CoreData */,
 				B724B48C1EB79F0C0023AEBE /* AppDelegate.swift */,
 				B724B48E1EB79F0C0023AEBE /* FriendsController.swift */,
 				B724B4961EB79F0C0023AEBE /* Assets.xcassets */,
@@ -81,8 +82,21 @@
 				B724B4A11EB7A29E0023AEBE /* Extensions.swift */,
 				B724B4A31EB7C9100023AEBE /* FriendsControllerHelper.swift */,
 				B724B4A51EB7C9590023AEBE /* MessageCell.swift */,
+				B724B4AF1EB7ED080023AEBE /* ChatLogController.swift */,
+				B768C11E1EB8FB2700B3A1CB /* CustomTabBarController.swift */,
 			);
 			path = FBMessenger;
+			sourceTree = "<group>";
+		};
+		B768C11D1EB8FA5300B3A1CB /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				B724B4A71EB7CBE90023AEBE /* Message+CoreDataClass.swift */,
+				B724B4A81EB7CBE90023AEBE /* Message+CoreDataProperties.swift */,
+				B724B4A91EB7CBE90023AEBE /* Friend+CoreDataClass.swift */,
+				B724B4AA1EB7CBE90023AEBE /* Friend+CoreDataProperties.swift */,
+			);
+			name = CoreData;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -158,9 +172,11 @@
 			files = (
 				B724B48F1EB79F0C0023AEBE /* FriendsController.swift in Sources */,
 				B724B48D1EB79F0C0023AEBE /* AppDelegate.swift in Sources */,
+				B768C11F1EB8FB2700B3A1CB /* CustomTabBarController.swift in Sources */,
 				B724B4951EB79F0C0023AEBE /* FBMessenger.xcdatamodeld in Sources */,
 				B724B4A21EB7A29E0023AEBE /* Extensions.swift in Sources */,
 				B724B4AD1EB7CBE90023AEBE /* Friend+CoreDataClass.swift in Sources */,
+				B724B4B01EB7ED080023AEBE /* ChatLogController.swift in Sources */,
 				B724B4A41EB7C9100023AEBE /* FriendsControllerHelper.swift in Sources */,
 				B724B4A61EB7C9590023AEBE /* MessageCell.swift in Sources */,
 				B724B4AE1EB7CBE90023AEBE /* Friend+CoreDataProperties.swift in Sources */,
@@ -321,6 +337,7 @@
 				B724B4A01EB79F0C0023AEBE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
