@@ -22,14 +22,120 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     
     var messages: [Message]?
     
+    
+    let messageContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.white
+        
+        return view
+    }()
+    
+    let inputTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "Enter message....."
+        
+       return textField
+    }()
+    
+    lazy var sendButton: UIButton = {
+        let button = UIButton(type: UIButtonType.system)
+        button.setTitle("Send", for: .normal)
+        button.setTitleColor(UIColor.blue, for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        button.addTarget(self, action: #selector(handleSend), for: .touchUpInside)
+        
+        return button
+    }()
+    
+    var bottomMessageContainerViewContraint: NSLayoutConstraint?
+    
+    func handleSend() {
+        
+        let delegate = UIApplication.shared.delegate as? AppDelegate
+        if let context = delegate?.persistentContainer.viewContext {
+            let message = FriendsController.createMessageWithText(text: inputTextField.text!, friend: friend!, minutesAgo: 0, context: context, isSender: true)
+            
+            do {
+                try context.save()
+                
+                messages?.append(message)
+                
+                let insertIndexPath = IndexPath(item: (messages?.count)! - 1, section: 0)
+                collectionView?.insertItems(at: [insertIndexPath])
+                collectionView?.scrollToItem(at: insertIndexPath, at: .bottom, animated: true)
+                inputTextField.text = nil
+                
+            } catch let error {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tabBarController?.tabBar.isHidden = true
+        
         collectionView?.backgroundColor = UIColor.white
         collectionView?.register(ChatLogMessageCell.self, forCellWithReuseIdentifier: cellId)
+        
+        // add the view
+        view.addSubview(messageContainerView)
+        
+        view.addContraintWithFormat(format: "H:|[v0]|", views: messageContainerView)
+        view.addContraintWithFormat(format: "V:[v0(48)]", views: messageContainerView)
+        
+        bottomMessageContainerViewContraint = NSLayoutConstraint(item: messageContainerView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)
+        view.addConstraint(bottomMessageContainerViewContraint!)
+        
+        setupInputComponents()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+
     }
     
+    private func setupInputComponents() {
+        
+        let topBorderView = UIView()
+        topBorderView.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        
+        messageContainerView.addSubview(inputTextField)
+        messageContainerView.addSubview(sendButton)
+        messageContainerView.addSubview(topBorderView)
+        
+        messageContainerView.addContraintWithFormat(format: "H:|-8-[v0][v1(60)]|", views: inputTextField, sendButton)
+        messageContainerView.addContraintWithFormat(format: "V:|[v0]|", views: inputTextField)
+        messageContainerView.addContraintWithFormat(format: "V:|[v0]|", views: sendButton)
+        
+        messageContainerView.addContraintWithFormat(format: "H:|[v0]|", views: topBorderView)
+        messageContainerView.addContraintWithFormat(format: "V:|[v0(1)]", views: topBorderView)
+    }
     
+    @objc private func handleKeyboardNotification(notification: NSNotification) {
+        if let userInfo = notification.userInfo {
+            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as AnyObject).cgRectValue
+            
+            let isKeyboardShowing = notification.name == NSNotification.Name.UIKeyboardWillShow
+            
+            bottomMessageContainerViewContraint?.constant = isKeyboardShowing ? -(keyboardFrame?.height)! : 0
+            
+            UIView.animate(withDuration: 0, delay: 0, options: .curveEaseOut, animations: {
+                self.view.layoutIfNeeded()
+                
+            }, completion: { complted in
+                if isKeyboardShowing {
+                    let indexPath = IndexPath(item: (self.messages?.count)! - 1, section: 0)
+                    self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+                }
+            })
+        }
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        inputTextField.endEditing(true)
+    }
+
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         if let count = messages?.count {
@@ -162,6 +268,5 @@ class ChatLogMessageCell: BaseCell {
         textBubbleView.addSubview(bubbleImageView)
         addContraintWithFormat(format: "H:|[v0]|", views: bubbleImageView)
         addContraintWithFormat(format: "V:|[v0]|", views: bubbleImageView)
-        
     }
 }
