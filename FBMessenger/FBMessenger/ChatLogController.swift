@@ -9,20 +9,15 @@
 import UIKit
 import CoreData
 
-class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate {
     
     private let cellId = "chatId"
     
     var friend: Friend? {
         didSet {
             navigationItem.title = friend?.name
-//            messages = friend?.messages?.allObjects as? [Message]
-//            messages?.sort() { $0.date?.compare($1.date! as Date) == ComparisonResult.orderedAscending }
         }
     }
-    
-//    var messages: [Message]?
-    
     
     let messageContainerView: UIView = {
         let view = UIView()
@@ -54,19 +49,11 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         
         let delegate = UIApplication.shared.delegate as? AppDelegate
         if let context = delegate?.persistentContainer.viewContext {
-            let message = FriendsController.createMessageWithText(text: inputTextField.text!, friend: friend!, minutesAgo: 0, context: context, isSender: true)
+            _ = FriendsController.createMessageWithText(text: inputTextField.text!, friend: friend!, minutesAgo: 0, context: context, isSender: true)
             
             do {
                 try context.save()
                 inputTextField.text = nil
-
-//                messages?.append(message)
-//                
-//                // insert new message
-//                let insertIndexPath = IndexPath(item: (messages?.count)! - 1, section: 0)
-//                collectionView?.insertItems(at: [insertIndexPath])
-//                collectionView?.scrollToItem(at: insertIndexPath, at: .bottom, animated: true)
-                
             } catch let error {
                 print(error.localizedDescription)
             }
@@ -76,7 +63,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     func simulate() {
         let delegate = UIApplication.shared.delegate as? AppDelegate
         if let context = delegate?.persistentContainer.viewContext {
-            let message = FriendsController.createMessageWithText(text: "A minute ago message for the simulation...", friend: friend!, minutesAgo: 1, context: context)
+            _ = FriendsController.createMessageWithText(text: "A minute ago message for the simulation...", friend: friend!, minutesAgo: 1, context: context)
         
             do {
                 try context.save()
@@ -97,10 +84,35 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
 
         
         let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context!, sectionNameKeyPath: nil, cacheName: nil)
-        
+        frc.delegate = self
        
         return frc
     }()
+    
+    var blockOperations = [BlockOperation]()
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        
+        if type == .insert {
+            blockOperations.append( BlockOperation(block: {
+                self.collectionView?.insertItems(at: [newIndexPath!])
+                
+            }))
+        }
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        collectionView?.performBatchUpdates({
+            for operation in self.blockOperations {
+                operation.start()
+            }
+        }, completion: { completed in
+            
+            let lastItemIndex = (self.fetchResultController.sections?[0].numberOfObjects)! - 1
+            let indexPath = IndexPath(item: lastItemIndex, section: 0)
+            self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+        })
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -166,8 +178,9 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
                 
             }, completion: { complted in
                 if isKeyboardShowing {
-//                    let indexPath = IndexPath(item: (self.messages?.count)! - 1, section: 0)
-//                    self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+                    let lastItemIndex = (self.fetchResultController.sections?[0].numberOfObjects)! - 1
+                    let indexPath = IndexPath(item: lastItemIndex, section: 0)
+                    self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
                 }
             })
         }
