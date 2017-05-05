@@ -39,7 +39,7 @@ class LoginController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-        button.addTarget(self, action: #selector(handleRegister), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleLoginRegister), for: .touchUpInside)
         
         return button
     }()
@@ -145,6 +145,32 @@ class LoginController: UIViewController {
             equalTo: inputContainerView.heightAnchor,
             multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 1/2 : 1/3)
         passwordTextFieldHeightAnchor?.isActive = true
+    }
+    
+    func handleLoginRegister() {
+        if loginRegisterSegmentedControl.selectedSegmentIndex == 0 {
+            handleLogin()
+        } else {
+            handleRegister()
+        }
+    }
+    
+    func handleLogin() {
+        guard let email = emailTextField.text, let password = passwordTextField.text else {
+            return
+        }
+    
+        FIRAuth.auth()?.signIn(withEmail: email, password: password, completion:
+            { (user, error) in
+            
+                if error != nil {
+                    print(error?.localizedDescription ?? "Login Error")
+                    return
+                }
+                
+                // Login Successful
+                self.dismiss(animated: true, completion: nil)
+            })
     }
     
     func handleRegister() {

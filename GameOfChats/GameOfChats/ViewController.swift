@@ -8,7 +8,6 @@
 
 import UIKit
 import Firebase
-import FirebaseDatabase
 
 class ViewController: UITableViewController {
 
@@ -17,11 +16,22 @@ class ViewController: UITableViewController {
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         
+        // user is not logged in
+        if FIRAuth.auth()?.currentUser?.uid == nil {
+            // give some delay
+            perform(#selector(handleLogout), with: nil, afterDelay: 0)
+        }
     }
     
     func handleLogout() {
-        let loginController = LoginController()
         
+        do {
+            try FIRAuth.auth()?.signOut()
+        } catch let error {
+            print(error.localizedDescription)
+        }
+        
+        let loginController = LoginController()
         present(loginController, animated: true, completion: nil)
     }
 
