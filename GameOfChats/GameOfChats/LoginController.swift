@@ -32,7 +32,7 @@ class LoginController: UIViewController {
     }()
     
     
-    let loginRegisterButton: UIButton = {
+    lazy var loginRegisterButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = UIColor(r: 61, g: 101, b: 161)
         button.setTitle("Register", for: .normal)
@@ -86,16 +86,19 @@ class LoginController: UIViewController {
     }()
     
     
-    let profileImageView: UIImageView = {
+    lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.image = UIImage(named: "Stark")
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.isUserInteractionEnabled = true
+        
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectProfileImageView)))
         
         return imageView
     }()
     
-    let loginRegisterSegmentedControl: UISegmentedControl = {
+    lazy var loginRegisterSegmentedControl: UISegmentedControl = {
         let sc = UISegmentedControl(items: ["Login", "Register"])
         sc.translatesAutoresizingMaskIntoConstraints = false
         sc.tintColor = UIColor.white
@@ -118,95 +121,7 @@ class LoginController: UIViewController {
         return .lightContent
     }
     
-    func handleLoginRegisterChange() {
-        let title = loginRegisterSegmentedControl.titleForSegment(at: loginRegisterSegmentedControl.selectedSegmentIndex)
         
-        loginRegisterButton.setTitle(title, for: .normal)
-        
-        // change height of input container using contraint
-        inputContainerViewHeightAnchor?.constant = loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 100 : 150
-        
-        // change height of name text field
-        nameTextFieldHeightAnchor?.isActive = false
-        nameTextFieldHeightAnchor = nameTextField.heightAnchor.constraint(
-            equalTo: inputContainerView.heightAnchor,
-            multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 0 : 1/3)
-        nameTextField.placeholder = loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? "" : "Name"
-        nameTextFieldHeightAnchor?.isActive = true
-
-        emailTextFieldHeightAnchor?.isActive = false
-        emailTextFieldHeightAnchor = emailTextField.heightAnchor.constraint(
-            equalTo: inputContainerView.heightAnchor,
-            multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 1/2 : 1/3)
-        emailTextFieldHeightAnchor?.isActive = true
-        
-        passwordTextFieldHeightAnchor?.isActive = false
-        passwordTextFieldHeightAnchor = passwordTextField.heightAnchor.constraint(
-            equalTo: inputContainerView.heightAnchor,
-            multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 1/2 : 1/3)
-        passwordTextFieldHeightAnchor?.isActive = true
-    }
-    
-    func handleLoginRegister() {
-        if loginRegisterSegmentedControl.selectedSegmentIndex == 0 {
-            handleLogin()
-        } else {
-            handleRegister()
-        }
-    }
-    
-    func handleLogin() {
-        guard let email = emailTextField.text, let password = passwordTextField.text else {
-            return
-        }
-    
-        FIRAuth.auth()?.signIn(withEmail: email, password: password, completion:
-            { (user, error) in
-            
-                if error != nil {
-                    print(error?.localizedDescription ?? "Login Error")
-                    return
-                }
-                
-                // Login Successful
-                self.dismiss(animated: true, completion: nil)
-            })
-    }
-    
-    func handleRegister() {
-        guard let email = emailTextField.text,
-            let password = passwordTextField.text,
-            let name = nameTextField.text else {
-            return
-        }
-        
-        FIRAuth.auth()?.createUser(withEmail: email, password: password) { (user, error) in
-            if error != nil {
-                print(error?.localizedDescription ?? "Auth Error")
-                return
-            }
-            
-            guard let uid = user?.uid else {
-                return
-            }
-            
-            // Successful
-            // use child node named users to store user data
-            let userReference = self.databaseReference.child("users").child(uid)
-            let values = ["name": name, "email": email]
-            userReference.updateChildValues(
-                values,
-                withCompletionBlock: {(err, databaseRef) in
-                
-                if err != nil {
-                    print(err?.localizedDescription ?? "Insert Error")
-                    return
-                }
-                self.dismiss(animated: true, completion: nil)
-            })
-        }
-    }
-    
     func setupViews() {
         view.addSubview(inputContainerView)
         view.addSubview(loginRegisterButton)
