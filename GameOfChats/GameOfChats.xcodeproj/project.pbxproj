@@ -8,8 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		9D7F92232D1AAC285E36A462 /* Pods_GameOfChats.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656BB5E5AA1AD1C29DBEF08C /* Pods_GameOfChats.framework */; };
+		B73A4F681EBC9FCF00A86B53 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73A4F671EBC9FCF00A86B53 /* User.swift */; };
+		B75E6F3A1EBC8F0A0021222E /* NewMessagTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75E6F391EBC8F0A0021222E /* NewMessagTableViewController.swift */; };
 		B768C12D1EBBC1F800B3A1CB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B768C12C1EBBC1F800B3A1CB /* AppDelegate.swift */; };
-		B768C12F1EBBC1F800B3A1CB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B768C12E1EBBC1F800B3A1CB /* ViewController.swift */; };
+		B768C12F1EBBC1F800B3A1CB /* MessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B768C12E1EBBC1F800B3A1CB /* MessagesController.swift */; };
 		B768C1341EBBC1F800B3A1CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B768C1331EBBC1F800B3A1CB /* Assets.xcassets */; };
 		B768C1371EBBC1F800B3A1CB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B768C1351EBBC1F800B3A1CB /* LaunchScreen.storyboard */; };
 		B768C1401EBBC38E00B3A1CB /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B768C13F1EBBC38E00B3A1CB /* LoginController.swift */; };
@@ -20,9 +22,11 @@
 /* Begin PBXFileReference section */
 		656BB5E5AA1AD1C29DBEF08C /* Pods_GameOfChats.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GameOfChats.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		73533B37088327D7EA635D8A /* Pods-GameOfChats.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GameOfChats.release.xcconfig"; path = "Pods/Target Support Files/Pods-GameOfChats/Pods-GameOfChats.release.xcconfig"; sourceTree = "<group>"; };
+		B73A4F671EBC9FCF00A86B53 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		B75E6F391EBC8F0A0021222E /* NewMessagTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMessagTableViewController.swift; sourceTree = "<group>"; };
 		B768C1291EBBC1F800B3A1CB /* GameOfChats.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameOfChats.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B768C12C1EBBC1F800B3A1CB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B768C12E1EBBC1F800B3A1CB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		B768C12E1EBBC1F800B3A1CB /* MessagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesController.swift; sourceTree = "<group>"; };
 		B768C1331EBBC1F800B3A1CB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B768C1361EBBC1F800B3A1CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B768C1381EBBC1F800B3A1CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -44,6 +48,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B73A4F661EBC9FB700A86B53 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B73A4F671EBC9FCF00A86B53 /* User.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		B768C1201EBBC1F800B3A1CB = {
 			isa = PBXGroup;
 			children = (
@@ -65,6 +77,7 @@
 		B768C12B1EBBC1F800B3A1CB /* GameOfChats */ = {
 			isa = PBXGroup;
 			children = (
+				B73A4F661EBC9FB700A86B53 /* Model */,
 				B768C1451EBC520800B3A1CB /* Supporting Files */,
 				B768C13E1EBBC36E00B3A1CB /* Controller */,
 				B768C12C1EBBC1F800B3A1CB /* AppDelegate.swift */,
@@ -76,9 +89,10 @@
 		B768C13E1EBBC36E00B3A1CB /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				B768C12E1EBBC1F800B3A1CB /* ViewController.swift */,
+				B768C12E1EBBC1F800B3A1CB /* MessagesController.swift */,
 				B768C13F1EBBC38E00B3A1CB /* LoginController.swift */,
 				B768C1411EBBC4DD00B3A1CB /* Extensions.swift */,
+				B75E6F391EBC8F0A0021222E /* NewMessagTableViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -233,7 +247,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B768C12F1EBBC1F800B3A1CB /* ViewController.swift in Sources */,
+				B75E6F3A1EBC8F0A0021222E /* NewMessagTableViewController.swift in Sources */,
+				B768C12F1EBBC1F800B3A1CB /* MessagesController.swift in Sources */,
+				B73A4F681EBC9FCF00A86B53 /* User.swift in Sources */,
 				B768C1401EBBC38E00B3A1CB /* LoginController.swift in Sources */,
 				B768C12D1EBBC1F800B3A1CB /* AppDelegate.swift in Sources */,
 				B768C1421EBBC4DD00B3A1CB /* Extensions.swift in Sources */,
