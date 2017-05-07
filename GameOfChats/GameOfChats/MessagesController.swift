@@ -28,17 +28,23 @@ class MessagesController: UITableViewController {
             // give some delay
             perform(#selector(handleLogout), with: nil, afterDelay: 0)
         } else {
-            let uid = FIRAuth.auth()?.currentUser?.uid
-            
-            FIRDatabase.database().reference().child("users").child(uid!).observe(.value,
-                with: { snapshot in
-                    if let userDict = snapshot.value as? [String: AnyObject] {
-                        DispatchQueue.main.async {
-                            self.navigationItem.title = userDict["name"] as? String
-                        }
-                    }
-                }, withCancel: nil)
+            fetchUserAndSetupNavBarTitle()
         }
+    }
+    
+    func fetchUserAndSetupNavBarTitle() {
+        guard let uid = FIRAuth.auth()?.currentUser?.uid else {
+            return
+        }
+        
+        FIRDatabase.database().reference().child("users").child(uid).observe(.value, with: { snapshot in
+                if let userDict = snapshot.value as? [String: AnyObject] {
+                    DispatchQueue.main.async {
+                        self.navigationItem.title = userDict["name"] as? String
+                    }
+                }
+        }, withCancel: nil)
+
     }
     
     func handleNewMessage() {
@@ -57,6 +63,7 @@ class MessagesController: UITableViewController {
         }
         
         let loginController = LoginController()
+        loginController.messageController = self
         present(loginController, animated: true, completion: nil)
     }
 

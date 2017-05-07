@@ -99,6 +99,8 @@ extension LoginController {
                 }
                 
                 // Login Successful
+                self.messageController?.fetchUserAndSetupNavBarTitle()
+                
                 self.dismiss(animated: true, completion: nil)
         })
     }
@@ -122,9 +124,12 @@ extension LoginController {
             
             // For image we will use storage
             let imageName = UUID().uuidString
-            let storageRef = FIRStorage.storage().reference().child("profile_images").child("\(imageName).png")
+            let storageRef = FIRStorage.storage().reference().child("profile_images").child("\(imageName).jpg")
             
-            if let uploadImageData = UIImagePNGRepresentation(self.profileImageView.image!) {
+            // use compression for the profile image
+            if let uploadImageData = UIImageJPEGRepresentation(self.profileImageView.image!, 0.1) {
+            
+//            if let uploadImageData = UIImagePNGRepresentation(self.profileImageView.image!) {
                 storageRef.put(uploadImageData, metadata: nil, completion: {
                     (metadata, error) in
                     
@@ -156,6 +161,11 @@ extension LoginController {
                 print(err?.localizedDescription ?? "Insert Error")
                 return
             }
+             
+            // Extra firebase call
+//            self.messageController?.fetchUserAndSetupNavBarTitle()
+            self.messageController?.navigationItem.title = values["name"] as? String
+            
             self.dismiss(animated: true, completion: nil)
         })
     }

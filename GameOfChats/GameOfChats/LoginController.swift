@@ -12,6 +12,8 @@ import FirebaseDatabase
 
 class LoginController: UIViewController {
     
+    var messageController: MessagesController?
+    
     var inputContainerViewHeightAnchor: NSLayoutConstraint?
     var nameTextFieldHeightAnchor: NSLayoutConstraint?
     var emailTextFieldHeightAnchor: NSLayoutConstraint?
