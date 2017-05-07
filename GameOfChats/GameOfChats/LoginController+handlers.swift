@@ -126,8 +126,11 @@ extension LoginController {
             let imageName = UUID().uuidString
             let storageRef = FIRStorage.storage().reference().child("profile_images").child("\(imageName).jpg")
             
+            
+            if let profileImage = self.profileImageView.image, let uploadImageData = UIImageJPEGRepresentation(profileImage, 0.1) {
+            
             // use compression for the profile image
-            if let uploadImageData = UIImageJPEGRepresentation(self.profileImageView.image!, 0.1) {
+//            if let uploadImageData = UIImageJPEGRepresentation(self.profileImageView.image!, 0.1) {
             
 //            if let uploadImageData = UIImagePNGRepresentation(self.profileImageView.image!) {
                 storageRef.put(uploadImageData, metadata: nil, completion: {
@@ -164,7 +167,10 @@ extension LoginController {
              
             // Extra firebase call
 //            self.messageController?.fetchUserAndSetupNavBarTitle()
-            self.messageController?.navigationItem.title = values["name"] as? String
+//            self.messageController?.navigationItem.title = values["name"] as? String
+            let user = User()
+            user.setValuesForKeys(values)
+            self.messageController?.setupNavBarWithUser(user: user)
             
             self.dismiss(animated: true, completion: nil)
         })
