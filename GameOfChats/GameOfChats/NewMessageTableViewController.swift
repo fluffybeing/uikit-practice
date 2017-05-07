@@ -65,21 +65,22 @@ class NewMessageTableViewController: UITableViewController {
         
         if let profileImageURL = user.profileImageUrl {
             
-            let url = URL(string: profileImageURL)
-            let task = URLSession.shared.dataTask(with: url!) {
-                (data, response, error) in
-                
-                if error != nil {
-                    print(error?.localizedDescription ?? "Profile Image Download Error")
-                    return
-                }
-                
-                // successful
-                DispatchQueue.main.async {
-                    cell.profileImageView.image = UIImage(data: data!)
-                }
-            }
-            task.resume()
+//            let url = URL(string: profileImageURL)
+//            let task = URLSession.shared.dataTask(with: url!) {
+//                (data, response, error) in
+//                
+//                if error != nil {
+//                    print(error?.localizedDescription ?? "Profile Image Download Error")
+//                    return
+//                }
+//                
+//                // successful
+//                DispatchQueue.main.async {
+//                    cell.profileImageView.image = UIImage(data: data!)
+//                }
+//            }
+//            task.resume()
+            cell.profileImageView.loadImageUsingCacheWithURLString(urlString: profileImageURL)
         }
         
         return cell
