@@ -128,11 +128,6 @@ extension LoginController {
             
             
             if let profileImage = self.profileImageView.image, let uploadImageData = UIImageJPEGRepresentation(profileImage, 0.1) {
-            
-            // use compression for the profile image
-//            if let uploadImageData = UIImageJPEGRepresentation(self.profileImageView.image!, 0.1) {
-            
-//            if let uploadImageData = UIImagePNGRepresentation(self.profileImageView.image!) {
                 storageRef.put(uploadImageData, metadata: nil, completion: {
                     (metadata, error) in
                     
@@ -141,8 +136,6 @@ extension LoginController {
                         return
                     }
                     // Image Upload Successful
-//                    print(metadata) use po metadata to see properties
-                    
                     if let profileImageURL = metadata?.downloadURL()?.absoluteString {
                         let values = ["name": name,
                                       "email": email,
@@ -165,10 +158,8 @@ extension LoginController {
                 return
             }
              
-            // Extra firebase call
-//            self.messageController?.fetchUserAndSetupNavBarTitle()
-//            self.messageController?.navigationItem.title = values["name"] as? String
             let user = User()
+            //This might fail if keys doesn't matches
             user.setValuesForKeys(values)
             self.messageController?.setupNavBarWithUser(user: user)
             

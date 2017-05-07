@@ -39,12 +39,11 @@ class MessagesController: UITableViewController {
         
         FIRDatabase.database().reference().child("users").child(uid).observe(.value, with: { snapshot in
                 if let userDict = snapshot.value as? [String: AnyObject] {
+                    
                     let user = User()
+                    // This might crash if key doesn't matches
                     user.setValuesForKeys(userDict)
                     
-//                    DispatchQueue.main.async {
-//                        self.navigationItem.title = userDict["name"] as? String
-//                    }
                     self.setupNavBarWithUser(user: user)
                 }
         }, withCancel: nil)
@@ -55,7 +54,6 @@ class MessagesController: UITableViewController {
         
         let titleView = UIView()
         titleView.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
-//        titleView.backgroundColor = UIColor.red
         
         let containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
