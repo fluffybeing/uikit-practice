@@ -29,7 +29,7 @@ class NewMessageTableViewController: UITableViewController {
             
             if let userDicitionary = snapshot.value as? [String: Any] {
                 let user = User()
-                
+                user.id = snapshot.key
                 // This setter will crash if class properties doesn't match with
                 // FIREBASE keys
                 user.setValuesForKeys(userDicitionary)
@@ -74,6 +74,17 @@ class NewMessageTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 72
+    }
+    
+    
+    var messagesController: MessagesController?
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        dismiss(animated: true) {
+            
+            let user = self.users[indexPath.row]
+            self.messagesController?.showChatControllerWithUser(user: user)
+        }
     }
 }
 

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9D7F92232D1AAC285E36A462 /* Pods_GameOfChats.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656BB5E5AA1AD1C29DBEF08C /* Pods_GameOfChats.framework */; };
+		B7226CF01EC0F5F7006DCB66 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7226CEF1EC0F5F7006DCB66 /* Message.swift */; };
 		B73A4F681EBC9FCF00A86B53 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73A4F671EBC9FCF00A86B53 /* User.swift */; };
 		B73A4F6A1EBCA71400A86B53 /* LoginController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73A4F691EBCA71400A86B53 /* LoginController+handlers.swift */; };
 		B73A4F6D1EBDF0C900A86B53 /* Extensions+ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73A4F6C1EBDF0C900A86B53 /* Extensions+ImageCache.swift */; };
@@ -25,6 +26,7 @@
 /* Begin PBXFileReference section */
 		656BB5E5AA1AD1C29DBEF08C /* Pods_GameOfChats.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GameOfChats.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		73533B37088327D7EA635D8A /* Pods-GameOfChats.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GameOfChats.release.xcconfig"; path = "Pods/Target Support Files/Pods-GameOfChats/Pods-GameOfChats.release.xcconfig"; sourceTree = "<group>"; };
+		B7226CEF1EC0F5F7006DCB66 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		B73A4F671EBC9FCF00A86B53 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		B73A4F691EBCA71400A86B53 /* LoginController+handlers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LoginController+handlers.swift"; sourceTree = "<group>"; };
 		B73A4F6C1EBDF0C900A86B53 /* Extensions+ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions+ImageCache.swift"; sourceTree = "<group>"; };
@@ -58,6 +60,7 @@
 			isa = PBXGroup;
 			children = (
 				B73A4F671EBC9FCF00A86B53 /* User.swift */,
+				B7226CEF1EC0F5F7006DCB66 /* Message.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -271,6 +274,7 @@
 				B73A4F681EBC9FCF00A86B53 /* User.swift in Sources */,
 				B768C1401EBBC38E00B3A1CB /* LoginController.swift in Sources */,
 				B73A4F6A1EBCA71400A86B53 /* LoginController+handlers.swift in Sources */,
+				B7226CF01EC0F5F7006DCB66 /* Message.swift in Sources */,
 				B768C12D1EBBC1F800B3A1CB /* AppDelegate.swift in Sources */,
 				B768C1421EBBC4DD00B3A1CB /* Extensions+UIColor.swift in Sources */,
 			);

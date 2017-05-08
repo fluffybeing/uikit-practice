@@ -11,6 +11,8 @@ import Firebase
 import FirebaseDatabase
 
 class MessagesController: UITableViewController {
+    
+    var messages = [Message]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,6 +22,26 @@ class MessagesController: UITableViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(handleNewMessage))
         
         checkIfUserIsLoggedIn()
+        observeMessages()
+    }
+    
+    func observeMessages() {
+        let ref = FIRDatabase.database().reference().child("messages")
+        
+        ref.observe(.childAdded, with: { snapshot in
+            
+            if let messageDict = snapshot.value as? [String: Any] {
+                let message = Message()
+                message.setValuesForKeys(messageDict)
+                self.messages.append(message)
+                
+                // Need to reload the tableView 
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+                
+            }
+        }, withCancel: nil)
     }
     
     func checkIfUserIsLoggedIn() {
@@ -99,16 +121,23 @@ class MessagesController: UITableViewController {
         self.navigationItem.titleView = titleView
         
         // Call the new controller 
-        titleView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showChatController)))
+//        titleView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showChatController)))
     }
     
-    func showChatController() {
+    func showChatControllerWithUser(user: User) {
         let chatLogController = ChatLogController(collectionViewLayout: UICollectionViewFlowLayout())
+        
+        chatLogController.user = user
+        
         navigationController?.pushViewController(chatLogController, animated: true)
     }
     
     func handleNewMessage() {
         let newMessageController = NewMessageTableViewController()
+        
+        // pass the message controller reference
+        newMessageController.messagesController = self
+        
         let navigationContoller = UINavigationController(rootViewController: newMessageController)
         
         present(navigationContoller, animated: true, completion: nil)
@@ -126,6 +155,19 @@ class MessagesController: UITableViewController {
         loginController.messageController = self
         present(loginController, animated: true, completion: nil)
     }
-
+    
+    
+    // MARK: TableView DataSource
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return messages.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cellId")
+        
+        cell.textLabel?.text = messages[indexPath.row].text
+        return cell
+    }
+    
 }
 
