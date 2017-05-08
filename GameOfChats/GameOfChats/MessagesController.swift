@@ -44,7 +44,9 @@ class MessagesController: UITableViewController {
                     // This might crash if key doesn't matches
                     user.setValuesForKeys(userDict)
                     
-                    self.setupNavBarWithUser(user: user)
+                    DispatchQueue.main.async {
+                        self.setupNavBarWithUser(user: user)
+                    }
                 }
         }, withCancel: nil)
 
@@ -95,6 +97,14 @@ class MessagesController: UITableViewController {
         containerView.centerYAnchor.constraint(equalTo: titleView.centerYAnchor).isActive = true
         
         self.navigationItem.titleView = titleView
+        
+        // Call the new controller 
+        titleView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showChatController)))
+    }
+    
+    func showChatController() {
+        let chatLogController = ChatLogController(collectionViewLayout: UICollectionViewFlowLayout())
+        navigationController?.pushViewController(chatLogController, animated: true)
     }
     
     func handleNewMessage() {
