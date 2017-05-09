@@ -50,8 +50,8 @@ class MessagesController: UITableViewController {
                     message.setValuesForKeys(messageDict)
                     
                     // Keep only last messages for a user
-                    if let toId = message.toId {
-                        self.messageDictionary[toId] = message
+                    if let chatPartnerId = message.chatPartnerId() {
+                        self.messageDictionary[chatPartnerId] = message
                         
                         self.messages = Array(self.messageDictionary.values)
                         self.messages.sort(by: {
