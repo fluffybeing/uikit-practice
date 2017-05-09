@@ -12,7 +12,10 @@ import FirebaseDatabase
 
 class MessagesController: UITableViewController {
     
+    let cellId = "messageCell"
+    
     var messages = [Message]()
+    var messageDictionary = [String: Message]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +26,9 @@ class MessagesController: UITableViewController {
         
         checkIfUserIsLoggedIn()
         observeMessages()
+        
+        // Cell
+        tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
     }
     
     func observeMessages() {
@@ -33,7 +39,16 @@ class MessagesController: UITableViewController {
             if let messageDict = snapshot.value as? [String: Any] {
                 let message = Message()
                 message.setValuesForKeys(messageDict)
-                self.messages.append(message)
+                
+                // Keep only last messages for a user
+                if let toId = message.toId {
+                    self.messageDictionary[toId] = message
+                 
+                    self.messages = Array(self.messageDictionary.values)
+                    self.messages.sort(by: {
+                        return ($0.0.timestamp?.intValue)! > ($0.1.timestamp?.intValue)!
+                    })
+                }
                 
                 // Need to reload the tableView 
                 DispatchQueue.main.async {
@@ -163,10 +178,16 @@ class MessagesController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cellId")
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserCell
         
-        cell.textLabel?.text = messages[indexPath.row].text
+        let message = messages[indexPath.row]
+        cell.message = message
+        
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 72
     }
     
 }

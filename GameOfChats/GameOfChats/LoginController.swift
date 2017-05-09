@@ -20,7 +20,7 @@ class LoginController: UIViewController {
     var passwordTextFieldHeightAnchor: NSLayoutConstraint?
     
     let databaseReference: FIRDatabaseReference = {
-        return FIRDatabase.database().reference(fromURL: "https://game-of-chats-8f25d.firebaseio.com/")
+        return FIRDatabase.database().reference()
     }()
     
     let inputContainerView: UIView = {
