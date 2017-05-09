@@ -72,6 +72,12 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         })
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     func observeMessages() {
         
         guard let uid = FIRAuth.auth()?.currentUser?.uid else {
