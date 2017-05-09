@@ -39,37 +39,53 @@ class MessagesController: UITableViewController {
         
         let ref = FIRDatabase.database().reference().child("user-messages").child(uid)
         ref.observe(.childAdded, with: { snapshot in
-            let messageId = snapshot.key
             
-            // Now fetch the messages for the corresponding Id's
-            let messageRef = FIRDatabase.database().reference().child("messages").child(messageId)
-            messageRef.observeSingleEvent(of: .value, with: { snapshot in
-                
-                if let messageDict = snapshot.value as? [String: Any] {
-                    let message = Message()
-                    message.setValuesForKeys(messageDict)
-                    
-                    // Keep only last messages for a user
-                    if let chatPartnerId = message.chatPartnerId() {
-                        self.messageDictionary[chatPartnerId] = message
-                        
-                        self.messages = Array(self.messageDictionary.values)
-                        self.messages.sort(by: {
-                            return ($0.0.timestamp?.intValue)! > ($0.1.timestamp?.intValue)!
-                        })
-                    }
-                    
-                    self.timer?.invalidate()
-                    self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
-                }
+            let userId = snapshot.key
+            FIRDatabase.database().reference().child("user-messages").child(uid).child(userId).observe(.childAdded, with: { snapshot in
+            
+                let messageId = snapshot.key
+                self.fetchMessageWithMessageId(messageId: messageId)
             })
+        })
+    }
+    
+    private func fetchMessageWithMessageId(messageId: String) {
+        // Now fetch the messages for the corresponding Id's
+        let messageRef = FIRDatabase.database().reference().child("messages").child(messageId)
+        
+        messageRef.observeSingleEvent(of: .value, with: { snapshot in
+            
+            if let messageDict = snapshot.value as? [String: Any] {
+                let message = Message()
+                message.setValuesForKeys(messageDict)
+                
+                // Keep only last messages for a user
+                if let chatPartnerId = message.chatPartnerId() {
+                    self.messageDictionary[chatPartnerId] = message
+                    
+                }
+                
+                // reload the table
+                self.attemptReloadOfTable()
+            }
         })
     }
     
     var timer: Timer?
     
+    private func attemptReloadOfTable() {
+        self.timer?.invalidate()
+        self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
+    }
+ 
+    
     func handleReloadTable() {
         // Need to reload the tableView
+        self.messages = Array(self.messageDictionary.values)
+        self.messages.sort(by: {
+            return ($0.0.timestamp?.intValue)! > ($0.1.timestamp?.intValue)!
+        })
+
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
