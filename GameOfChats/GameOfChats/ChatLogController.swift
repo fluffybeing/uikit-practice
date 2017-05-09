@@ -42,6 +42,34 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         collectionView?.alwaysBounceVertical = true
         
         setupInputComponents()
+        setupKeyboardObservers()
+    }
+    
+    func setupKeyboardObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow), name: Notification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHide), name: Notification.Name.UIKeyboardWillHide, object: nil)
+
+    }
+    
+    func handleKeyboardWillShow(notification: Notification) {
+        let keyboardFrame = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as AnyObject).cgRectValue
+        let keyboardAnimationDuration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as AnyObject).doubleValue
+        
+        containerViewBottomAnchor?.constant = -(keyboardFrame?.height)!
+        
+        UIView.animate(withDuration: keyboardAnimationDuration!, animations: {
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    func handleKeyboardWillHide(notification: Notification) {
+        containerViewBottomAnchor?.constant = 0
+        
+        let keyboardAnimationDuration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as AnyObject).doubleValue
+        
+        UIView.animate(withDuration: keyboardAnimationDuration!, animations: {
+            self.view.layoutIfNeeded()
+        })
     }
     
     func observeMessages() {
@@ -77,6 +105,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         })
     }
     
+    var containerViewBottomAnchor: NSLayoutConstraint?
+    
     func setupInputComponents() {
         let containerView = UIView()
         containerView.backgroundColor = UIColor.white
@@ -86,7 +116,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
         // constrainsts
         containerView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
+        containerViewBottomAnchor = containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        containerViewBottomAnchor?.isActive = true
         containerView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
         containerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
