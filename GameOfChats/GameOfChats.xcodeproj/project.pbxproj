@@ -10,6 +10,7 @@
 		9D7F92232D1AAC285E36A462 /* Pods_GameOfChats.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656BB5E5AA1AD1C29DBEF08C /* Pods_GameOfChats.framework */; };
 		B7226CF01EC0F5F7006DCB66 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7226CEF1EC0F5F7006DCB66 /* Message.swift */; };
 		B7226CF31EC1A7D6006DCB66 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7226CF21EC1A7D6006DCB66 /* UserCell.swift */; };
+		B7226CF51EC1E7DE006DCB66 /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7226CF41EC1E7DE006DCB66 /* ChatMessageCell.swift */; };
 		B73A4F681EBC9FCF00A86B53 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73A4F671EBC9FCF00A86B53 /* User.swift */; };
 		B73A4F6A1EBCA71400A86B53 /* LoginController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73A4F691EBCA71400A86B53 /* LoginController+handlers.swift */; };
 		B73A4F6D1EBDF0C900A86B53 /* Extensions+ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73A4F6C1EBDF0C900A86B53 /* Extensions+ImageCache.swift */; };
@@ -29,6 +30,7 @@
 		73533B37088327D7EA635D8A /* Pods-GameOfChats.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GameOfChats.release.xcconfig"; path = "Pods/Target Support Files/Pods-GameOfChats/Pods-GameOfChats.release.xcconfig"; sourceTree = "<group>"; };
 		B7226CEF1EC0F5F7006DCB66 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		B7226CF21EC1A7D6006DCB66 /* UserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
+		B7226CF41EC1E7DE006DCB66 /* ChatMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
 		B73A4F671EBC9FCF00A86B53 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		B73A4F691EBCA71400A86B53 /* LoginController+handlers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LoginController+handlers.swift"; sourceTree = "<group>"; };
 		B73A4F6C1EBDF0C900A86B53 /* Extensions+ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions+ImageCache.swift"; sourceTree = "<group>"; };
@@ -62,6 +64,7 @@
 			isa = PBXGroup;
 			children = (
 				B7226CF21EC1A7D6006DCB66 /* UserCell.swift */,
+				B7226CF41EC1E7DE006DCB66 /* ChatMessageCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -287,6 +290,7 @@
 				B73A4F6A1EBCA71400A86B53 /* LoginController+handlers.swift in Sources */,
 				B7226CF01EC0F5F7006DCB66 /* Message.swift in Sources */,
 				B768C12D1EBBC1F800B3A1CB /* AppDelegate.swift in Sources */,
+				B7226CF51EC1E7DE006DCB66 /* ChatMessageCell.swift in Sources */,
 				B7226CF31EC1A7D6006DCB66 /* UserCell.swift in Sources */,
 				B768C1421EBBC4DD00B3A1CB /* Extensions+UIColor.swift in Sources */,
 			);

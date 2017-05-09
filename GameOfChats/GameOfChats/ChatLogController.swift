@@ -10,11 +10,16 @@ import UIKit
 import Firebase
 import FirebaseDatabase
 
-class ChatLogController: UICollectionViewController, UITextFieldDelegate {
+class ChatLogController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout {
+    
+    private let cellId = "messageId"
+    var messages = [Message]()
     
     var user: User? {
         didSet {
             navigationItem.title = user?.name
+            
+            observeMessages()
         }
     }
     
@@ -31,12 +36,48 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         collectionView?.backgroundColor = UIColor.white
+        collectionView?.register(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView?.alwaysBounceVertical = true
+        
         setupInputComponents()
+    }
+    
+    func observeMessages() {
+        
+        guard let uid = FIRAuth.auth()?.currentUser?.uid else {
+            return
+        }
+        
+        let userMessageRef = FIRDatabase.database().reference().child("user-messages").child(uid)
+        userMessageRef.observe(.childAdded, with: { snapshot in
+            
+            let messageId = snapshot.key
+            
+            let messagesRef = FIRDatabase.database().reference().child("messages").child(messageId)
+            messagesRef.observeSingleEvent(of: .value, with: { snapshot in
+                
+                guard let dict = snapshot.value as? [String: Any] else {
+                    return
+                }
+                
+                
+                let message = Message()
+                message.setValuesForKeys(dict)
+                
+                if message.chatPartnerId() == self.user?.id {
+                    self.messages.append(message)
+                
+                    DispatchQueue.main.async {
+                        self.collectionView?.reloadData()
+                    }
+                }
+            })
+        })
     }
     
     func setupInputComponents() {
         let containerView = UIView()
-//        containerView.backgroundColor = UIColor.red
+        containerView.backgroundColor = UIColor.white
         containerView.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(containerView)
@@ -102,7 +143,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
                     return
                 }
                 
-                // crea te fanout
+                // create fanout
                 let userMessageRef = FIRDatabase.database().reference().child("user-messages").child(fromId)
                 let messageId = childRef.key
                 userMessageRef.updateChildValues([messageId: 1])
@@ -119,4 +160,23 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
         handleMessageSend()
         return true
     }
+    
+    // MARK: DataSource
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return messages.count
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ChatMessageCell
+        
+        let message = messages[indexPath.item]
+        cell.messageTextView.text = message.text
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: view.frame.width, height: 80)
+    }
+    
 }
