@@ -95,7 +95,21 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
             
             let timeStamp = Int(Date().timeIntervalSince1970)
             let values: [String: Any] = ["text": messageText, "toId": toId, "fromId": fromId, "timestamp": timeStamp]
-            childRef.updateChildValues(values)
+            childRef.updateChildValues(values, withCompletionBlock: { (error, _) in
+                
+                if let error = error {
+                    print(error)
+                    return
+                }
+                
+                // crea te fanout
+                let userMessageRef = FIRDatabase.database().reference().child("user-messages").child(fromId)
+                let messageId = childRef.key
+                userMessageRef.updateChildValues([messageId: 1])
+                
+                let recepientUserMessageRef = FIRDatabase.database().reference().child("user-messages").child(toId)
+                recepientUserMessageRef.updateChildValues([messageId: 1])
+            })
         }
     }
     
@@ -105,5 +119,4 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
         handleMessageSend()
         return true
     }
- 
 }

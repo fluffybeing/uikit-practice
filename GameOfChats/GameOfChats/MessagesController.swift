@@ -25,10 +25,47 @@ class MessagesController: UITableViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(handleNewMessage))
         
         checkIfUserIsLoggedIn()
-        observeMessages()
+//        observeMessages()
         
         // Cell
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
+    }
+    
+    func observerUserMessages() {
+        
+        guard let uid = FIRAuth.auth()?.currentUser?.uid else {
+            return
+        }
+        
+        let ref = FIRDatabase.database().reference().child("user-messages").child(uid)
+        ref.observe(.childAdded, with: { snapshot in
+            let messageId = snapshot.key
+            
+            // Now fetch the messages for the corresponding Id's
+            let messageRef = FIRDatabase.database().reference().child("messages").child(messageId)
+            messageRef.observeSingleEvent(of: .value, with: { snapshot in
+                
+                if let messageDict = snapshot.value as? [String: Any] {
+                    let message = Message()
+                    message.setValuesForKeys(messageDict)
+                    
+                    // Keep only last messages for a user
+                    if let toId = message.toId {
+                        self.messageDictionary[toId] = message
+                        
+                        self.messages = Array(self.messageDictionary.values)
+                        self.messages.sort(by: {
+                            return ($0.0.timestamp?.intValue)! > ($0.1.timestamp?.intValue)!
+                        })
+                    }
+                    
+                    // Need to reload the tableView
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+                }
+            })
+        })
     }
     
     func observeMessages() {
@@ -90,6 +127,11 @@ class MessagesController: UITableViewController {
     }
     
     func setupNavBarWithUser(user: User) {
+        messages.removeAll()
+        messageDictionary.removeAll()
+        tableView.reloadData()
+        
+        observerUserMessages()
         
         let titleView = UIView()
         titleView.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
