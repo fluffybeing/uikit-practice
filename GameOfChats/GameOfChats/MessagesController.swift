@@ -59,41 +59,20 @@ class MessagesController: UITableViewController {
                         })
                     }
                     
-                    // Need to reload the tableView
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                    }
+                    self.timer?.invalidate()
+                    self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
                 }
             })
         })
     }
     
-    func observeMessages() {
-        let ref = FIRDatabase.database().reference().child("messages")
-        
-        ref.observe(.childAdded, with: { snapshot in
-            
-            if let messageDict = snapshot.value as? [String: Any] {
-                let message = Message()
-                message.setValuesForKeys(messageDict)
-                
-                // Keep only last messages for a user
-                if let toId = message.toId {
-                    self.messageDictionary[toId] = message
-                 
-                    self.messages = Array(self.messageDictionary.values)
-                    self.messages.sort(by: {
-                        return ($0.0.timestamp?.intValue)! > ($0.1.timestamp?.intValue)!
-                    })
-                }
-                
-                // Need to reload the tableView 
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-                
-            }
-        }, withCancel: nil)
+    var timer: Timer?
+    
+    func handleReloadTable() {
+        // Need to reload the tableView
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
     
     func checkIfUserIsLoggedIn() {

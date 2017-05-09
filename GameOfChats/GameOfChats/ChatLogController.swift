@@ -175,9 +175,35 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
         let message = messages[indexPath.item]
         cell.messageTextView.text = message.text
+        
+        setupMessageCell(cell: cell, message: message)
+        
+        // modify bubblewidth somehow
         cell.bubbleWidthAnchor?.constant = estimatedFrameForText(text: message.text!).width + 32
         
         return cell
+    }
+    
+    private func setupMessageCell(cell: ChatMessageCell, message: Message) {
+        if let profileImageUrl = self.user?.profileImageUrl {
+            cell.profileImageView.loadImageUsingCacheWithURLString(urlString: profileImageUrl)
+        }
+        
+        if message.fromId == FIRAuth.auth()?.currentUser?.uid {
+            cell.bubbleView.backgroundColor = ChatMessageCell.blueColor
+            cell.profileImageView.isHidden = true
+            
+            cell.bubbleRightAnchor?.isActive = true
+            cell.bubbleLeftAnchor?.isActive = false
+            
+        } else {
+            cell.bubbleView.backgroundColor = UIColor(r: 240, g: 240, b: 240)
+            cell.messageTextView.textColor = UIColor.black
+            cell.profileImageView.isHidden = false
+            
+            cell.bubbleRightAnchor?.isActive = false
+            cell.bubbleLeftAnchor?.isActive = true
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
