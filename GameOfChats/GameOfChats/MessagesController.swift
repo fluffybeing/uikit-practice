@@ -56,8 +56,7 @@ class MessagesController: UITableViewController {
         messageRef.observeSingleEvent(of: .value, with: { snapshot in
             
             if let messageDict = snapshot.value as? [String: Any] {
-                let message = Message()
-                message.setValuesForKeys(messageDict)
+                let message = Message(dictionary: messageDict)
                 
                 // Keep only last messages for a user
                 if let chatPartnerId = message.chatPartnerId() {

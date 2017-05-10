@@ -11,6 +11,7 @@ import UIKit
 class ChatMessageCell: UICollectionViewCell {
     
     static let blueColor = UIColor(r: 0, g: 137, b: 249)
+    var chatLogController: ChatLogController?
  
     let messageTextView: UITextView = {
         let textView = UITextView()
@@ -18,6 +19,7 @@ class ChatMessageCell: UICollectionViewCell {
         textView.font = UIFont.systemFont(ofSize: 16)
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.textColor = UIColor.white
+        textView.isEditable = false
         
         return textView
     }()
@@ -42,12 +44,14 @@ class ChatMessageCell: UICollectionViewCell {
         return imageView
     }()
     
-    let messageImageView: UIImageView = {
+    lazy var messageImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 16
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFill
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleZoomTap(_:))))
         
         return imageView
     }()
@@ -64,6 +68,13 @@ class ChatMessageCell: UICollectionViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func handleZoomTap(_ tapGesture: UITapGestureRecognizer) {
+        
+        if let imageView = tapGesture.view as? UIImageView {
+            chatLogController?.performZoomInForStartingImageView(startingImageView: imageView)
+        }
     }
     
     func setupViews() {
