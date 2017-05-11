@@ -19,6 +19,7 @@ class Message: NSObject {
     var imageWidth: NSNumber?
     var imageHeight: NSNumber?
     
+    var videoUrl: String?
     
     init(dictionary: [String: Any]) {
          super.init()
@@ -31,6 +32,8 @@ class Message: NSObject {
         self.imageUrl = dictionary["imageUrl"] as? String
         self.imageHeight =  dictionary["imageHeight"] as? NSNumber
         self.imageWidth =  dictionary["imageWidth"] as? NSNumber
+        
+        self.videoUrl = dictionary["videoUrl"] as? String
 
     }
     
