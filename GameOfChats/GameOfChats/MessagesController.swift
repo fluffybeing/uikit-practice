@@ -29,6 +29,45 @@ class MessagesController: UITableViewController {
         
         // Cell
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
+        
+        // Delete a cell
+        tableView.allowsMultipleSelectionDuringEditing = true
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
+        // Do after delete work
+        guard let uid = FIRAuth.auth()?.currentUser?.uid else {
+            return
+        }
+        
+        let message = self.messages[indexPath.row]
+        
+        if let chatPartnerId = message.chatPartnerId() {
+            FIRDatabase.database().reference().child("user-messages").child(uid).child(chatPartnerId).removeValue(completionBlock: { error, ref in
+                
+                if error != nil {
+                    print(error?.localizedDescription ?? "")
+                    return
+                }
+                
+                self.messageDictionary.removeValue(forKey: chatPartnerId)
+                self.attemptReloadOfTable()
+                
+                // Wrong way because we are messages dictionary
+                // index path will not be same as lot of messages will
+                // keep coming
+//                self.messages.remove(at: indexPath.row)
+//                self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                
+            })
+
+        }
+        
     }
     
     func observerUserMessages() {
@@ -46,6 +85,12 @@ class MessagesController: UITableViewController {
                 let messageId = snapshot.key
                 self.fetchMessageWithMessageId(messageId: messageId)
             })
+        })
+        
+        // check for deletion from third party
+        ref.observe(.childRemoved, with: { snapshot in
+            self.messageDictionary.removeValue(forKey: snapshot.key)
+            self.attemptReloadOfTable()
         })
     }
     
